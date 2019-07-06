@@ -1,10 +1,14 @@
 package com.example.whatsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.example.whatsapp.Login.LoginActivity;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,6 +16,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
     private TabsAccessorAdapter myTabsAccessorAdapter;
+
+
+    private FirebaseUser currentUser;
 
 
     @Override
@@ -34,5 +41,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-}
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (currentUser == null) {
+            // user not has authenticated
+            sendUserToLoginActivity();
+        }
+    }
+
+    private void sendUserToLoginActivity() {
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
+}
