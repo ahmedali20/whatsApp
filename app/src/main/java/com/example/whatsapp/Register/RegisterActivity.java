@@ -21,11 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
+
+
     private Button createAccountButton;
     private EditText userEmail, userPassword;
     private TextView alreadyHaveAnAccountLink;
 
-    private FirebaseAuth mAuth;
 
     private ProgressDialog loadingBar;
 
