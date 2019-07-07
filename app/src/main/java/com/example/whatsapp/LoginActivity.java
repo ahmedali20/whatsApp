@@ -69,17 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void sendUserToMainActivity() {
-        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // msh fahmha
-        startActivity(mainIntent);
-        finish();
-    }
 
-    private void sendUserToRegisterActivity() {
-        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-        startActivity(registerIntent);
-    }
 
     private void allowUserToLogin() {
 
@@ -117,5 +107,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+    private void sendUserToMainActivity() {
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // msh fahmha
+        startActivity(mainIntent);
+        finish();
+    }
+
+    private void sendUserToRegisterActivity() {
+        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(registerIntent);
+    }
 
 }

@@ -23,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
-    private DatabaseReference rootRef;
+    private DatabaseReference RootRef;
 
 
     private Button createAccountButton;
@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        rootRef = mDatabase.getReference();
+        RootRef = mDatabase.getReference();
 
 
         InitializeFileds();
@@ -103,8 +103,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
 
-                                String currentUserId = mAuth.getCurrentUser().getUid();
-                                rootRef.child("Users").child(currentUserId).setValue("");
+                                String currentUserID = mAuth.getCurrentUser().getUid();
+                                RootRef.child("Users").child(currentUserID).setValue("");
 
 
                                 sendUserToMainActivity();
