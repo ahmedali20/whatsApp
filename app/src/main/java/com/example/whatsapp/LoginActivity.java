@@ -1,4 +1,4 @@
-package com.example.whatsapp.Login;
+package com.example.whatsapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,18 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.whatsapp.MainActivity;
-import com.example.whatsapp.R;
-import com.example.whatsapp.Register.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
 
     private ProgressDialog loadingBar;
@@ -40,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
 
         InitializeFileds();
@@ -73,17 +67,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (currentUser != null) {
-            // user not has authenticated
-            sendUserToMainActivity();
-        }
-    }
+
 
     private void sendUserToMainActivity() {
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // msh fahmha
         startActivity(mainIntent);
         finish();
     }

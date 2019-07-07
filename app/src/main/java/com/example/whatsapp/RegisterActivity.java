@@ -1,4 +1,4 @@
-package com.example.whatsapp.Register;
+package com.example.whatsapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,16 +12,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.whatsapp.Login.LoginActivity;
-import com.example.whatsapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference rootRef;
 
 
     private Button createAccountButton;
@@ -39,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        rootRef = mDatabase.getReference();
 
 
         InitializeFileds();
@@ -98,7 +102,12 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                sendUserToLoginActivity();
+
+                                String currentUserId = mAuth.getCurrentUser().getUid();
+                                rootRef.child("Users").child(currentUserId).setValue("");
+
+
+                                sendUserToMainActivity();
                                 Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_LONG).show();
                                 loadingBar.dismiss();
                             } else {
@@ -111,4 +120,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    private void sendUserToMainActivity() {
+        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // msh fahmha
+        startActivity(mainIntent);
+        finish();
+    }
 }
