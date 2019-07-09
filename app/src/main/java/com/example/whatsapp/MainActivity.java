@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.child(NAME).exists())) {
-                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                 } else {
                     sendUserToSettingsActivity();
                 }

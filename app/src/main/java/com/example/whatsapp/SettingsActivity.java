@@ -48,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
         currentUserID = mAuth.getCurrentUser().getUid();
 
 
-        initializeFileds();
+        InitializeFields();
 
 
         userName.setVisibility(View.INVISIBLE);
@@ -65,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    private void initializeFileds() {
+    private void InitializeFields() {
         updateAccountSettings = findViewById(R.id.update_settings_button);
         userName = findViewById(R.id.set_user_name);
         userStatus = findViewById(R.id.set_profile_status);
@@ -81,10 +81,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         if (TextUtils.isEmpty(setUserName)) {
-            Toast.makeText(SettingsActivity.this, "please Write Your User name First ....", Toast.LENGTH_LONG).show();
+            Toast.makeText(SettingsActivity.this, "please Write Your User name First ....", Toast.LENGTH_SHORT).show();
         }
         if (TextUtils.isEmpty(setUserStatus)) {
-            Toast.makeText(SettingsActivity.this, "please Write Your Status..", Toast.LENGTH_LONG).show();
+            Toast.makeText(SettingsActivity.this, "please Write Your Status..", Toast.LENGTH_SHORT).show();
         } else {
             HashMap<String, String> profileMap = new HashMap<>();
             profileMap.put(UID, currentUserID);
@@ -96,10 +96,10 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 sendUserToMainActivity();
-                                Toast.makeText(SettingsActivity.this, "profile updated successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SettingsActivity.this, "profile updated successfully", Toast.LENGTH_SHORT).show();
                             } else {
                                 String message = task.getException().toString();
-                                Toast.makeText(SettingsActivity.this, "Error : " + message, Toast.LENGTH_LONG).show();
+                                Toast.makeText(SettingsActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
 
                             }
                         }

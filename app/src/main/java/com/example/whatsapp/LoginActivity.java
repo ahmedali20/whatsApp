@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        InitializeFileds();
+        InitializeFields();
 
 
         needNewAccountLink.setOnClickListener(new View.OnClickListener() {
@@ -55,10 +55,18 @@ public class LoginActivity extends AppCompatActivity {
                 allowUserToLogin();
             }
         });
+
+
+        phoneLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToPhoneLoginActivity();
+            }
+        });
     }
 
 
-    private void InitializeFileds() {
+    private void InitializeFields() {
         loginButton = findViewById(R.id.login_button);
         phoneLoginButton = findViewById(R.id.phone_login_button);
         userEmail = findViewById(R.id.login_email);
@@ -77,10 +85,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (TextUtils.isEmpty(eamil)) {
-            Toast.makeText(this, "please enter your email address...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "please enter your email address...", Toast.LENGTH_SHORT).show();
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "please enter your password...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "please enter your password...", Toast.LENGTH_SHORT).show();
         } else {
             loadingBar.setTitle("Sign in ");
             loadingBar.setMessage("Please wait...");
@@ -94,11 +102,11 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 sendUserToMainActivity();
-                                Toast.makeText(LoginActivity.this, "Logged in Successful..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Logged in Successful..", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             } else {
                                 String message = task.getException().toString();
-                                Toast.makeText(LoginActivity.this, "Error : " + message, Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
                         }
@@ -118,5 +126,11 @@ public class LoginActivity extends AppCompatActivity {
     private void sendUserToRegisterActivity() {
         Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(registerIntent);
+    }
+
+
+    private void sendUserToPhoneLoginActivity() {
+        Intent phoneLoginIntent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
+        startActivity(phoneLoginIntent);
     }
 }

@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         RootRef = mDatabase.getReference();
 
 
-        InitializeFileds();
+        InitializeFields();
 
 
         alreadyHaveAnAccountLink.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void InitializeFileds() {
+    private void InitializeFields() {
         createAccountButton = findViewById(R.id.register_button);
         userEmail = findViewById(R.id.register_email);
         userPassword = findViewById(R.id.register_password);
@@ -88,10 +88,10 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "please enter your email address...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "please enter your email address...", Toast.LENGTH_SHORT).show();
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "please enter your password...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "please enter your password...", Toast.LENGTH_SHORT).show();
         } else {
             loadingBar.setTitle("Creating New Account");
             loadingBar.setMessage("Please wait, while we are creating new account for you..");
@@ -111,11 +111,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                                 sendUserToMainActivity();
-                                Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             } else {
                                 String message = task.getException().toString();
-                                Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
                         }

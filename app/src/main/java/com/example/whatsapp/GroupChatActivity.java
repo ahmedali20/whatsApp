@@ -60,7 +60,7 @@ public class GroupChatActivity extends AppCompatActivity {
         GroupNameRef = mDatabase.getReference().child(MainActivity.GROUPS).child(currentGroupName);
 
 
-        InitializationFields();
+        InitializeFields();
 
         GetUserInfo();
 
@@ -124,7 +124,7 @@ public class GroupChatActivity extends AppCompatActivity {
     }
 
 
-    private void InitializationFields() {
+    private void InitializeFields() {
         mToolbar = findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(currentGroupName);
@@ -210,7 +210,7 @@ public class GroupChatActivity extends AppCompatActivity {
             String UID = (String) ((DataSnapshot) iterator.next()).getValue();
 
 
-            displayTextMessage.append(chatName + " :\n" + chatMessage + " :\n" + chatTime + "   " + chatDate + "\n\n\n");
+            displayTextMessage.append(chatName + " :\n" + chatMessage + " \n" + chatTime + "   " + chatDate + "\n\n\n");
 
 
             mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
