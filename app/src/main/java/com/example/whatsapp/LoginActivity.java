@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userEmail, userPassword;
     private TextView needNewAccountLink, forgetPasswordLink;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         InitializeFileds();
+
 
         needNewAccountLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,17 +66,15 @@ public class LoginActivity extends AppCompatActivity {
         needNewAccountLink = findViewById(R.id.need_new_account_link);
         forgetPasswordLink = findViewById(R.id.forget_password_link);
         loadingBar = new ProgressDialog(this);
-
     }
-
-
-
 
 
     private void allowUserToLogin() {
 
+
         String eamil = userEmail.getText().toString();
         String password = userPassword.getText().toString();
+
 
         if (TextUtils.isEmpty(eamil)) {
             Toast.makeText(this, "please enter your email address...", Toast.LENGTH_LONG).show();
@@ -82,7 +82,6 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "please enter your password...", Toast.LENGTH_LONG).show();
         } else {
-
             loadingBar.setTitle("Sign in ");
             loadingBar.setMessage("Please wait...");
             loadingBar.setCanceledOnTouchOutside(true);
@@ -115,9 +114,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+
     private void sendUserToRegisterActivity() {
         Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(registerIntent);
     }
-
 }

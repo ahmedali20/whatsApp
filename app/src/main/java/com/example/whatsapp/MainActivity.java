@@ -1,5 +1,7 @@
 package com.example.whatsapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,10 +9,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
     private TabsAccessorAdapter myTabsAccessorAdapter;
+
+    public static final String USERS = "Users";
+    public static final String GROUPS = "Groups";
+    public static final String NAME = "Name";
+
+
 
 
     private FirebaseUser currentUser;
@@ -54,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
         myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
         myViewPager.setAdapter(myTabsAccessorAdapter);
 
+
         myTabLayout = findViewById(R.id.main_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
-
     }
 
 
@@ -84,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
 
+        if (item.getItemId() == R.id.main_Create_Group_option) {
+            RequestNewGroup();
+
+        }
+
         if (item.getItemId() == R.id.main_find_freinds_option) {
 
         }
@@ -97,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.main_logout_option) {
             mAuth.signOut();
             sendUserToLoginActivity();
-
         }
 
         return true;
     }
+
 
     private void sendUserToLoginActivity() {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -118,13 +135,15 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+
     private void VerifyUserExistance() {
 
+
         String currentUserID = mAuth.getCurrentUser().getUid();
-        RootRef.child("users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+        RootRef.child(USERS).child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if ((dataSnapshot.child("name").exists())) {
+                if ((dataSnapshot.child(NAME).exists())) {
                     Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_LONG).show();
                 } else {
                     sendUserToSettingsActivity();
@@ -136,5 +155,51 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void RequestNewGroup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog); // msh fahmha
+        builder.setTitle("Enter Group Name: ");
+
+
+        final EditText groupNameField = new EditText(MainActivity.this);
+        groupNameField.setHint("e.g Network Gang");
+        builder.setView(groupNameField);
+
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String groupName = groupNameField.getText().toString();
+
+                if (TextUtils.isEmpty(groupName)) {
+                    Toast.makeText(MainActivity.this, "please enter group name!", Toast.LENGTH_SHORT).show();
+                } else {
+                    CreateNewGroup(groupName);
+
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void CreateNewGroup(final String groupName) {
+        RootRef.child(GROUPS).child(groupName).setValue("")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, groupName + "  group is created successfully...", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
     }
 }

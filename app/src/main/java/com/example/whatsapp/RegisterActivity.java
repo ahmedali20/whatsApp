@@ -62,7 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
                 createNewAccount();
             }
         });
-
     }
 
 
@@ -74,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         loadingBar = new ProgressDialog(this);
     }
 
+
     private void sendUserToLoginActivity() {
         Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(loginIntent);
@@ -81,22 +81,25 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void createNewAccount() {
-        String eamil = userEmail.getText().toString();
+
+
+        String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
 
-        if (TextUtils.isEmpty(eamil)) {
+
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "please enter your email address...", Toast.LENGTH_LONG).show();
         }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "please enter your password...", Toast.LENGTH_LONG).show();
         } else {
-
             loadingBar.setTitle("Creating New Account");
             loadingBar.setMessage("Please wait, while we are creating new account for you..");
             loadingBar.setCanceledOnTouchOutside(true);
             loadingBar.show();
 
-            mAuth.createUserWithEmailAndPassword(eamil, password)
+
+            mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -104,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
                                 String currentUserID = mAuth.getCurrentUser().getUid();
-                                RootRef.child("Users").child(currentUserID).setValue("");
+                                RootRef.child(MainActivity.USERS).child(currentUserID).setValue("");
 
 
                                 sendUserToMainActivity();
@@ -119,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
         }
     }
+
 
     private void sendUserToMainActivity() {
         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);

@@ -25,5 +25,4 @@ public class ContactsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contacts, container, false);
     }
-
 }

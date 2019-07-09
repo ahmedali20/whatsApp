@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class TabsAccessorAdapter extends FragmentPagerAdapter {
 
+
     public TabsAccessorAdapter(FragmentManager fm) {
         super(fm);
     }
+
 
     @Override
     public Fragment getItem(int i) {
@@ -31,6 +33,7 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
 
     @Override
     public int getCount() {
