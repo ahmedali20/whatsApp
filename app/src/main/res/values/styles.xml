@@ -11,4 +11,10 @@
 
     <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog"></style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
 </resources>
