@@ -9,8 +9,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/main_find_freinds_option"
-        android:title="Find Freinds"
+        android:id="@+id/main_find_friends_option"
+        android:title="Find Friends"
         app:showAsAction="never" />
 
 

@@ -27,18 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String USERS = "Users";
+    public static final String GROUPS = "Groups";
+    public static final String NAME = "Name";
     private Toolbar mToolbar;
     private ViewPager myViewPager;
     private TabLayout myTabLayout;
     private TabsAccessorAdapter myTabsAccessorAdapter;
-
-    public static final String USERS = "Users";
-    public static final String GROUPS = "Groups";
-    public static final String NAME = "Name";
-
-
-
-
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
@@ -98,11 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.main_Create_Group_option) {
             RequestNewGroup();
-
         }
 
-        if (item.getItemId() == R.id.main_find_freinds_option) {
-
+        if (item.getItemId() == R.id.main_find_friends_option) {
+            sendUserToFindFriendsActivity();
         }
 
 
@@ -201,5 +195,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void sendUserToFindFriendsActivity() {
+        Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
     }
 }
