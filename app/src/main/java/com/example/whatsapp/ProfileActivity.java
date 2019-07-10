@@ -209,6 +209,11 @@ public class ProfileActivity extends AppCompatActivity {
                         AcceptChatRequest();
 
                     }
+
+                    if (currentState.equals(FRIENDS)) {
+                        RemoveSpecificContact();
+
+                    }
                 }
             });
 
@@ -246,37 +251,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-
-    private void cancelChatRequest() {
-
-        ChatRequsetRef.child(senderUserID).child(receiverUserID)
-                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if (task.isSuccessful()) {
-                    ChatRequsetRef.child(receiverUserID).child(senderUserID)
-                            .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-
-                            if (task.isSuccessful()) {
-                                sendMessageRequestButton.setEnabled(true);
-                                currentState = NEW;
-                                sendMessageRequestButton.setText("Send Message");
-
-
-                                declineMessageRequestButton.setVisibility(View.INVISIBLE);
-                                declineMessageRequestButton.setEnabled(false);
-                            }
-                        }
-                    });
-                }
-            }
-        });
     }
 
 
@@ -337,4 +311,65 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    private void cancelChatRequest() {
+
+        ChatRequsetRef.child(senderUserID).child(receiverUserID)
+                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+                    ChatRequsetRef.child(receiverUserID).child(senderUserID)
+                            .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                            if (task.isSuccessful()) {
+                                sendMessageRequestButton.setEnabled(true);
+                                currentState = NEW;
+                                sendMessageRequestButton.setText("Send Message");
+
+
+                                declineMessageRequestButton.setVisibility(View.INVISIBLE);
+                                declineMessageRequestButton.setEnabled(false);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    private void RemoveSpecificContact() {
+
+        ContactsRef.child(senderUserID).child(receiverUserID)
+                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+                    ContactsRef.child(receiverUserID).child(senderUserID)
+                            .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                            if (task.isSuccessful()) {
+                                sendMessageRequestButton.setEnabled(true);
+                                currentState = NEW;
+                                sendMessageRequestButton.setText("Send Message");
+
+
+                                declineMessageRequestButton.setVisibility(View.INVISIBLE);
+                                declineMessageRequestButton.setEnabled(false);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+    }
 }
