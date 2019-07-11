@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final int GalleryPick = 1;
 
     private Button updateAccountSettings;
+    private Toolbar settingsToolBar;
     private EditText userName, userStatus;
     private CircleImageView userProfileImage;
     private String currentUserID;
@@ -98,6 +100,13 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void InitializeFields() {
+        settingsToolBar = findViewById(R.id.find_friends_bar_layout);
+        setSupportActionBar(settingsToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Account Settings");
+
+
         updateAccountSettings = findViewById(R.id.update_settings_button);
         userName = findViewById(R.id.set_user_name);
         userStatus = findViewById(R.id.set_profile_status);
@@ -119,11 +128,11 @@ public class SettingsActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(setUserStatus)) {
             Toast.makeText(SettingsActivity.this, "please Write Your Status..", Toast.LENGTH_SHORT).show();
         } else {
-            HashMap<String, String> profileMap = new HashMap<>();
+            HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put(UID, currentUserID);
             profileMap.put(MainActivity.NAME, setUserName);
             profileMap.put(STATUS, setUserStatus);
-            RootRif.child(MainActivity.USERS).child(currentUserID).setValue(profileMap)
+            RootRif.child(MainActivity.USERS).child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
