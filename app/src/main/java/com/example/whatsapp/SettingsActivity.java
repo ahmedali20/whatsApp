@@ -52,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ProgressDialog loadingBar;
 
 
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference RootRif;
     private FirebaseAuth mAuth;
@@ -100,7 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void InitializeFields() {
-        settingsToolBar = findViewById(R.id.find_friends_bar_layout);
+        settingsToolBar = findViewById(R.id.settings_bar_layout);
         setSupportActionBar(settingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -112,6 +113,7 @@ public class SettingsActivity extends AppCompatActivity {
         userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
         loadingBar = new ProgressDialog(this);
+
     }
 
 

@@ -95,21 +95,15 @@ public class ContactsFragment extends Fragment {
 
                                 if (dataSnapshot.hasChild(SettingsActivity.IMAGE)) {
                                     String userProfileImage = dataSnapshot.child(SettingsActivity.IMAGE).getValue().toString();
-                                    String profileName = dataSnapshot.child(MainActivity.NAME).getValue().toString();
-                                    String profileStatus = dataSnapshot.child(SettingsActivity.STATUS).getValue().toString();
 
-                                    holder.userName.setText(profileName);
-                                    holder.userStatus.setText(profileStatus);
                                     Picasso.get().load(userProfileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
-                                } else {
-                                    String profileName = dataSnapshot.child(MainActivity.NAME).getValue().toString();
-                                    String profileStatus = dataSnapshot.child(SettingsActivity.STATUS).getValue().toString();
-
-                                    holder.userName.setText(profileName);
-                                    holder.userStatus.setText(profileStatus);
-
-
                                 }
+                                String profileName = dataSnapshot.child(MainActivity.NAME).getValue().toString();
+                                String profileStatus = dataSnapshot.child(SettingsActivity.STATUS).getValue().toString();
+
+                                holder.userName.setText(profileName);
+                                holder.userStatus.setText(profileStatus);
+
                             }
 
                             @Override

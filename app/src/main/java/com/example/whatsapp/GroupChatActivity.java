@@ -29,15 +29,17 @@ import java.util.Iterator;
 public class GroupChatActivity extends AppCompatActivity {
 
 
-    private static final String MESSAGE = "Message";
+    private static final String GROUP_MESSAGE = "Group Message";
     private static final String DATE = "Date";
     private static final String TIME = "Time";
+
     private Toolbar mToolbar;
     private ImageButton sendMessageButton;
     private EditText userMessageInput;
     private ScrollView mScrollView;
     private TextView displayTextMessage;
     private String currentGroupName, currentUserID, currentUserName, currentDate, currentTime;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference UsersRef, GroupNameRef, GroupMessageKeyRef;
@@ -49,7 +51,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
 
         // get the group name from the group fragment & store it in currentGroupName
-        currentGroupName = getIntent().getExtras().get("groupName: ").toString();
+        currentGroupName = getIntent().getExtras().get(GroupsFragment.GROUPNAME).toString();
         Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
 
 
@@ -185,7 +187,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
             HashMap<String, Object> messageInfoMap = new HashMap<>();
             messageInfoMap.put(MainActivity.NAME, currentUserName);
-            messageInfoMap.put(MESSAGE, message);
+            messageInfoMap.put(GROUP_MESSAGE, message);
             messageInfoMap.put(DATE, currentDate);
             messageInfoMap.put(TIME, currentTime);
             messageInfoMap.put(SettingsActivity.UID, currentUserID);

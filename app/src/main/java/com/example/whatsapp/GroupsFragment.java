@@ -29,6 +29,9 @@ import java.util.Set;
  */
 public class GroupsFragment extends Fragment {
 
+
+    public static final String GROUPNAME = "groupName: ";
+
     private View groupFragmentView;
     private ListView list_View;
     private ArrayAdapter<String> arrayAdapter;
@@ -70,7 +73,7 @@ public class GroupsFragment extends Fragment {
                 String currentGroupName = adapterView.getItemAtPosition(position).toString();
 
                 Intent groupChatIntent = new Intent(getContext(), GroupChatActivity.class);
-                groupChatIntent.putExtra("groupName: ", currentGroupName);// msh fahmha
+                groupChatIntent.putExtra(GROUPNAME, currentGroupName);// msh fahmha
                 startActivity(groupChatIntent);
             }
         });
