@@ -198,7 +198,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GalleryPick);
+        startActivityForResult(Intent.createChooser(galleryIntent, "Select Profile Image"), GalleryPick);
     }
 
     @Override

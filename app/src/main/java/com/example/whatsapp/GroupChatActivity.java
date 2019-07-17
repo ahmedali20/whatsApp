@@ -29,9 +29,9 @@ import java.util.Iterator;
 public class GroupChatActivity extends AppCompatActivity {
 
 
-    private static final String GROUP_MESSAGE = "Group Message";
-    private static final String DATE = "Date";
-    private static final String TIME = "Time";
+    public static final String GROUP_MESSAGE = "Group Message";
+    public static final String DATE = "Date";
+    public static final String TIME = "Time";
 
     private Toolbar mToolbar;
     private ImageButton sendMessageButton;

@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -106,13 +107,27 @@ public class RegisterActivity extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
 
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+
                                 String currentUserID = mAuth.getCurrentUser().getUid();
                                 RootRef.child(MainActivity.USERS).child(currentUserID).setValue("");
 
+                                RootRef.child(MainActivity.USERS).child(currentUserID)
+                                        .child(LoginActivity.DEVICE_TOKEN).setValue(deviceToken)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
 
-                                sendUserToMainActivity();
-                                Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                                                if (task.isSuccessful()) {
+
+                                                    sendUserToMainActivity();
+                                                    Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+                                                    loadingBar.dismiss();
+
+                                                }
+                                            }
+                                        });
                             } else {
                                 String message = task.getException().toString();
                                 Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -93,17 +94,45 @@ public class ContactsFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                if (dataSnapshot.hasChild(SettingsActivity.IMAGE)) {
-                                    String userProfileImage = dataSnapshot.child(SettingsActivity.IMAGE).getValue().toString();
+                                if (dataSnapshot.exists()) {
 
-                                    Picasso.get().load(userProfileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                                    if (dataSnapshot.child(MainActivity.USER_STATE).hasChild(MainActivity.STATE)) {
+
+                                        String state = dataSnapshot.child(MainActivity.USER_STATE).child(MainActivity.STATE).getValue().toString();
+                                        String date = dataSnapshot.child(MainActivity.USER_STATE).child(GroupChatActivity.DATE).getValue().toString();
+                                        String time = dataSnapshot.child(MainActivity.USER_STATE).child(GroupChatActivity.TIME).getValue().toString();
+
+                                        if (state.equals(MainActivity.ONLINE)) {
+
+                                            holder.onlineIcon.setVisibility(View.VISIBLE);
+
+                                        } else if (state.equals(MainActivity.OFFLINE)) {
+
+                                            holder.onlineIcon.setVisibility(View.INVISIBLE);
+
+                                        }
+
+                                    } else {
+
+
+                                        holder.onlineIcon.setVisibility(View.INVISIBLE);
+
+                                    }
+
+
+                                    if (dataSnapshot.hasChild(SettingsActivity.IMAGE)) {
+                                        String userProfileImage = dataSnapshot.child(SettingsActivity.IMAGE).getValue().toString();
+
+
+                                        Picasso.get().load(userProfileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                                    }
+                                    String profileName = dataSnapshot.child(MainActivity.NAME).getValue().toString();
+                                    String profileStatus = dataSnapshot.child(SettingsActivity.STATUS).getValue().toString();
+
+                                    holder.userName.setText(profileName);
+                                    holder.userStatus.setText(profileStatus);
+
                                 }
-                                String profileName = dataSnapshot.child(MainActivity.NAME).getValue().toString();
-                                String profileStatus = dataSnapshot.child(SettingsActivity.STATUS).getValue().toString();
-
-                                holder.userName.setText(profileName);
-                                holder.userStatus.setText(profileStatus);
-
                             }
 
                             @Override
@@ -132,6 +161,7 @@ public class ContactsFragment extends Fragment {
 
         TextView userName, userStatus;
         CircleImageView profileImage;
+        ImageView onlineIcon;
 
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +169,7 @@ public class ContactsFragment extends Fragment {
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_profile_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
+            onlineIcon = itemView.findViewById(R.id.user_online_status);
         }
     }
 }
