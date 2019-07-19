@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -53,14 +54,17 @@ public class ChatActivity extends AppCompatActivity {
     public static final String MESSAGES = "Messages";
     public static final String MESSAGE_TYPE = " Type";
     public static final String TEXT = "Text";
-    public static final String IMAGE = "Image";
     public static final String From = "From";
     public static final String NAME = "Name";
     public static final String TO = "To";
     public static final String MESSAGEID = "Message ID";
-    public static final String IMAGES = "Images Files";
+    public static final String IMAGE = "Image";
+    public static final String PDF = "pdf";
+    public static final String DOCS = "Docs";
     public static final String PDFFILES = "PDF Files";
     public static final String MSFILES = "MS Word Files";
+    public static final String IMAGES = "Images Files";
+    public static final String DOCUMENTS = "Documents Files";
 
     private static final int GalleryPick2 = 438;
     private ProgressDialog loadingBar;
@@ -152,10 +156,24 @@ public class ChatActivity extends AppCompatActivity {
                             startActivityForResult(Intent.createChooser(intent, "select Image"), GalleryPick2);
                         }
                         if (position == 1) {
-                            cheacker = "pdf";
+
+                            cheacker = PDF;
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("application/pdf");
+                            startActivityForResult(Intent.createChooser(intent, "Select PDF File"), GalleryPick2);
+
                         }
                         if (position == 2) {
-                            cheacker = "docx";
+
+                            cheacker = DOCS;
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("application/msword");
+                            startActivityForResult(Intent.createChooser(intent, "Select Ms Word File"), GalleryPick2);
+
                         }
 
                     }
@@ -221,7 +239,78 @@ public class ChatActivity extends AppCompatActivity {
 
             if (!cheacker.equals(IMAGE)) {
 
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                        .child(DOCUMENTS);
 
+                final String messsageSenderRef = MESSAGES + "/" + messageSenderID + "/" + messageReceiverID;
+                final String messsageRecevierRef = MESSAGES + "/" + messageReceiverID + "/" + messageSenderID;
+
+                DatabaseReference userMessageKeyRef = RootRef.child(MESSAGES)
+                        .child(messageSenderID).child(messageReceiverID)
+                        .push();
+                Log.e("kjnk,2", userMessageKeyRef + " ");
+
+
+                final String messagePushID = userMessageKeyRef.getKey();
+                Log.e("kjnk,3", messagePushID + " ");
+
+
+                final StorageReference filePath = storageReference.child(messagePushID + "." + cheacker);
+                Log.e("kjnk,4", filePath + " ");
+
+                uploadTask = filePath.putFile(fileUri);
+                uploadTask.continueWithTask(new Continuation() {
+                    @Override
+                    public Object then(@NonNull Task task) throws Exception {
+
+                        if (!task.isSuccessful()) {
+
+                            throw task.getException();
+                        }
+                        return filePath.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+
+                        if (task.isSuccessful()) {
+
+
+                            Uri downloadUrl = task.getResult();
+
+                            myUrL = downloadUrl.toString();
+
+
+                            Map messageDocumentsBody = new HashMap();
+
+                            messageDocumentsBody.put(PRIVATE_MESSAGE, myUrL);
+                            messageDocumentsBody.put(NAME, fileUri.getLastPathSegment());
+                            messageDocumentsBody.put(MESSAGE_TYPE, cheacker);
+                            messageDocumentsBody.put(From, messageSenderID);
+                            messageDocumentsBody.put(TO, messageReceiverID);
+                            messageDocumentsBody.put(MESSAGEID, messagePushID);
+                            messageDocumentsBody.put(GroupChatActivity.TIME, saveCurrentTime);
+                            messageDocumentsBody.put(GroupChatActivity.DATE, saveCurrentDate);
+
+
+                            Map messageBodyDetails = new HashMap();
+
+                            messageBodyDetails.put(messsageSenderRef + "/" + messagePushID, messageDocumentsBody);
+                            messageBodyDetails.put(messsageRecevierRef + "/" + messagePushID, messageDocumentsBody);
+
+                            RootRef.updateChildren(messageBodyDetails);
+                            loadingBar.dismiss();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        loadingBar.dismiss();
+
+                        Toast.makeText(ChatActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else if (cheacker.equals(IMAGE)) {
 
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference()
